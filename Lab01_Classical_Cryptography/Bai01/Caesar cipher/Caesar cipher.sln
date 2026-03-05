@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36717.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Caesar cipher", "Caesar cipher\Caesar cipher.vcxproj", "{F92B045E-736F-4AE6-9D90-27E150C9BC14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Debug|x64.ActiveCfg = Debug|x64
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Debug|x64.Build.0 = Debug|x64
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Debug|x86.ActiveCfg = Debug|Win32
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Debug|x86.Build.0 = Debug|Win32
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Release|x64.ActiveCfg = Release|x64
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Release|x64.Build.0 = Release|x64
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Release|x86.ActiveCfg = Release|Win32
+		{F92B045E-736F-4AE6-9D90-27E150C9BC14}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FE269F40-D762-4697-810E-C1847FD7AD9E}
+	EndGlobalSection
+EndGlobal
