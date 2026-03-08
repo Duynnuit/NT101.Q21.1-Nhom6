@@ -1,9 +1,3 @@
-// ============================================================
-//  MONO-ALPHABETIC CIPHER BREAKER
-//  Compatible: Visual Studio (MSVC), GCC, Clang
-//  Build: g++ -O2 -std=c++17 -o crack cipher_msvc.cpp  (GCC)
-//         cl /O2 /std:c++17 cipher_msvc.cpp             (MSVC)
-// ============================================================
 #include <iostream>
 #include <vector>
 #include <string>
@@ -15,16 +9,13 @@
 #include <cmath>
 using namespace std;
 
-// ============================================================
-//  SCORING DATA: Bigram[26x26] + Quadgram[26^4] arrays
-//  Dùng mảng tĩnh thay unordered_map -> O(1) lookup, nhanh hơn ~5x
-// ============================================================
+
 static double BG[26][26];
 static double QG[26][26][26][26];
-static double BF, QF; // floor (giá trị cho n-gram không có trong data)
+static double BF, QF; 
 
 void init() {
-    // --- BIGRAMS (200 phổ biến nhất, tần suất thực từ corpus tiếng Anh) ---
+
     struct E2 { const char* s; int n; };
     E2 bg[] = {
         {"TH",3882},{"HE",3681},{"IN",2283},{"ER",2182},{"AN",2140},
@@ -71,7 +62,7 @@ void init() {
     for (auto& e : bg)
         BG[e.s[0] - 'A'][e.s[1] - 'A'] = log((double)e.n / tot);
 
-    // --- QUADGRAMS (200 phổ biến nhất) ---
+
     struct E4 { const char* s; int n; };
     E4 qg[] = {
         {"TION",69177},{"NTHE",65718},{"THER",62672},{"THAT",62131},{"OFTH",60459},
@@ -137,11 +128,7 @@ void init() {
     }
 }
 
-// ============================================================
-//  KEY STRUCTURE
-//  fwd[plain_idx] = cipher_idx   (encode)
-//  rev[cipher_idx] = plain_idx   (decode) <- dùng khi tính score
-// ============================================================
+
 struct Key {
     uint8_t fwd[26], rev[26];
     Key() {}
@@ -151,7 +138,7 @@ struct Key {
             rev[s[i] - 'A'] = (uint8_t)i;
         }
     }
-    // Swap 2 plain letters, cập nhật cả 2 bảng
+
     void swap2(int a, int b) {
         uint8_t ca = fwd[a], cb = fwd[b];
         fwd[a] = cb; fwd[b] = ca;
@@ -159,7 +146,6 @@ struct Key {
     }
 };
 
-// Score trực tiếp trên cipher bytes — không tạo string trung gian (tối ưu tốc độ)
 double score(const vector<uint8_t>& c, const Key& k) {
     int n = (int)c.size();
     double s = 0;
@@ -180,9 +166,7 @@ string applyKey(const string& raw, const Key& k) {
     return r;
 }
 
-// ============================================================
-//  FREQUENCY SEED KEY (khởi điểm tốt hơn random)
-// ============================================================
+
 Key freqSeed(const vector<uint8_t>& c) {
     int f[26] = {};
     for (uint8_t x : c) f[x]++;
@@ -201,9 +185,7 @@ Key randKey(mt19937& rng) {
     return Key(s);
 }
 
-// ============================================================
-//  HILL CLIMBING: thử tất cả 325 cặp, restart ngay khi cải tiến
-// ============================================================
+
 pair<Key, double> hc(const vector<uint8_t>& c, Key k) {
     double s = score(c, k);
     bool imp = true;
@@ -214,16 +196,13 @@ pair<Key, double> hc(const vector<uint8_t>& c, Key k) {
                 k.swap2(a, b);
                 double ns = score(c, k);
                 if (ns > s) { s = ns; imp = true; break; }
-                k.swap2(a, b); // undo
+                k.swap2(a, b); 
             }
         }
     }
     return make_pair(k, s);
 }
 
-// ============================================================
-//  SIMULATED ANNEALING: thoát local optima
-// ============================================================
 pair<Key, double> sa(const vector<uint8_t>& c, Key k, mt19937& rng) {
     double s = score(c, k), bs = s;
     Key bk = k;
@@ -241,24 +220,17 @@ pair<Key, double> sa(const vector<uint8_t>& c, Key k, mt19937& rng) {
             s = ns;
             if (s > bs) { bs = s; bk = k; }
         }
-        else k.swap2(a, b); // undo
+        else k.swap2(a, b);
         T *= cool;
     }
     return make_pair(bk, bs);
 }
 
-// ============================================================
-//  MAIN
-// ============================================================
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     init();
 
-    cout << "=============================================\n";
-    cout << "  MONO-ALPHABETIC CIPHER BREAKER\n";
-    cout << "  Bigram + Quadgram + SA + Hill-Climbing\n";
-    cout << "=============================================\n\n";
     cout << "Nhap ciphertext (Enter 2 lan de ket thuc):\n";
 
     string raw, line;
@@ -289,7 +261,6 @@ int main() {
     Key bestKey;
     double bestScore = -1e18;
 
-    // Mỗi restart: HC -> SA -> HC (tốt nhất trong 3)
     auto tryKey = [&](Key sk) {
         pair<Key, double> r1 = hc(cipher, sk);
         pair<Key, double> r2 = sa(cipher, r1.first, rng);
@@ -307,7 +278,6 @@ int main() {
     int N = 200;
     cout << "Chay " << N + 1 << " restarts...\n\n";
 
-    // Restart 0: frequency-based seed (tốt hơn random)
     tryKey(freqSeed(cipher));
 
     // 200 random restarts
@@ -317,10 +287,7 @@ int main() {
         tryKey(randKey(rng));
     }
 
-    // In kết quả
-    cout << "\n=============================================\n";
-    cout << "KET QUA CUOI CUNG:\n";
-    cout << "=============================================\n";
+
     cout << "Score: " << fixed << setprecision(2) << bestScore << "\n";
     cout << "\nKey (Cipher -> Plain):\n";
     cout << "  Cipher: ABCDEFGHIJKLMNOPQRSTUVWXYZ\n";
