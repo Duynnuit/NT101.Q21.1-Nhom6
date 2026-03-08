@@ -51,7 +51,6 @@ double scoreText(const string& text) {
 }
 
 void bruteForce(const string& ciphertext) {
-    cout << "\nBRUTE-FORCE=" << endl;
     cout << string(60, '-') << endl;
 
     double bestScore = -1;
