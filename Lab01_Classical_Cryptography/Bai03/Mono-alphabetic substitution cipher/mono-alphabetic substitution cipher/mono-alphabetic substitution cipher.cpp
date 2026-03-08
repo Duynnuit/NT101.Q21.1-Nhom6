@@ -327,8 +327,8 @@ int main() {
         tryKey(randKey(rng));
     }
 
-    cout << "Score: " << fixed << setprecision(2) << bestScore << "\n";
-    cout << "\nPLAINTEXT:\n"
+    cout << "Score: " << fixed << setprecision(2) << bestScore << "\n\n";
+    cout << "PLAINTEXT:\n"
         << applyKey(clean, bestKey);
     return 0;
 }
