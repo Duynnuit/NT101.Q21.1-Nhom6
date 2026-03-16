@@ -2,8 +2,11 @@
 # Lớp:NT101.Q21.1
 ## Danh sách thành viên Nhóm 6
 | MSSV     | Họ và tên        |
+
 | 24520397 | Trần Anh Duy     |
+
 | 24520388 | Nguyễn Nhật Duy  |
+
 | 24521070 | Nguyễn Nhật Minh |
 
 ## Mục tiêu bài Lab
