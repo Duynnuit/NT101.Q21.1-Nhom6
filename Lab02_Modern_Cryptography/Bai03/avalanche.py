@@ -19,6 +19,5 @@ def avalanche_test():
         dist = hamming_distance(ct1, ct2)
         percent = (dist / 64) * 100
         print(f"{k.decode():<12} | {ct1.hex():<18} | {ct2.hex():<18} | {dist:>10}/64 bit | {percent:>6.2f}%")
-
 if __name__ == "__main__":
     avalanche_test()
